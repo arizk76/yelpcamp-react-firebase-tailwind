@@ -6,13 +6,11 @@ import { useLocalStorage } from '../utils/useLocalStorage';
 const Header = () => {
   const [showBanner, setShowBanner] = useLocalStorage('bannerState', true);
 
-  console.log(showBanner);
   let loc = useLocation();
 
   const closeBanner = () => {
     setShowBanner(false);
   };
-
   return (
     <>
       {loc.pathname !== '/' && showBanner ? (

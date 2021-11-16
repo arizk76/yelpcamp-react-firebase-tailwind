@@ -6,6 +6,7 @@ module.exports = {
       colors: {
         'floral-white': '#f9f6f1',
         'baby-blue': '#7AC5EA',
+        'Makara': '#63605B',
       },
     },
   },
