@@ -20,14 +20,19 @@ const MobileMenu = () => {
       {toggleMenu && (
         <ul
           onClick={handleToggleMenu}
-          className='transition duration-700 ease-in-out absolute top-10 right-20 rounded-md px-6 py-2 bg-floral-white'
+          className='transition duration-700 shadow-lg ease-in-out absolute top-8 right-20 rounded-md px-6 py-2 bg-floral-white text-lg'
         >
-          <li className='hover:text-Makara mb-2 mt-4'>
+          <li className='hover:text-Makara mb-2 mt-8'>
             <Link to='/'>Home</Link>
           </li>
-          <li className='hover:text-Makara mb-2'>Sign In</li>
-          <li className='hover:text-Makara hover:bg-white text-white bg-black transition duration-500 ease-in-out p-4 mb-4 rounded'>
-            Create an account
+          <li className='hover:text-Makara  mt-4 mb-12'>
+            <Link to='/campgrounds'>Campgrounds</Link>
+          </li>
+          <li className='hover:text-Makara mb-2'>
+            <Link to='/sign-in'>Sign In</Link>
+          </li>
+          <li className='hover:text-Makara hover:bg-white text-white bg-black transition duration-500 ease-in-out p-4 mb-8 rounded'>
+            <Link to='/sign-up'>Create an account</Link>
           </li>
         </ul>
       )}
