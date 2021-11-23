@@ -1,23 +1,49 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
+import { useFireAuth } from '../hooks/useFireAuth.js';
+import { useFireStore } from '../hooks/useFireStore.js';
 import { Link } from 'react-router-dom';
+
 import userTestimonial from '../images/userTestimonial.svg';
 
 const SignUpPage = () => {
+  const [error, setError] = useState();
+  const auth = useFireAuth();
+  const { addUser } = useFireStore();
+
   const nameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
 
-  const handleSubmit = async (evt) => {
+  const handleSignUp = async (evt) => {
     evt.preventDefault();
+    setError('');
+    if (passwordRef.current.value !== passwordConfirmRef.current.value) {
+      return setError('Password not matched');
+    }
+
+    try {
+      const userID = await auth
+        .signup(emailRef.current.value, passwordRef.current.value)
+        .then((user) => user.auth.currentUser.uid);
+      await addUser(nameRef.current.value, emailRef.current.value, userID);
+    } catch (err) {
+      if (err.code === 'auth/email-already-in-use') {
+        setError('Email already in use');
+      } else {
+        setError(err.code);
+      }
+    }
   };
+
+  // TODO: add user to new firestore db
 
   return (
     <section className='px-6'>
       <p className='p-2 text-5xl font-bold'>
         Start exploring camps from all over the world.
       </p>
-      <form className=' flex flex-col mt-4 mb-8' onSubmit={handleSubmit}>
+      <form className=' flex flex-col mt-4 mb-8' onSubmit={handleSignUp}>
         <label className='text-Makara text-xl py-4 font-semibold'>Name</label>
         <input
           className='px-4 py-6 bg-floral-white text-lg rounded'
@@ -25,6 +51,7 @@ const SignUpPage = () => {
           placeholder='Enter Your Name'
           type='text'
           ref={nameRef}
+          required
         ></input>
         <label className='text-Makara text-xl py-4 font-semibold'>Email</label>
         <input
@@ -33,6 +60,7 @@ const SignUpPage = () => {
           placeholder='Enter New Email'
           type='email'
           ref={emailRef}
+          required
         ></input>
         <label className='text-Makara text-xl py-4 font-semibold'>
           Password
@@ -43,6 +71,8 @@ const SignUpPage = () => {
           placeholder='Your Password'
           type='password'
           ref={passwordRef}
+          minLength={6}
+          required
         ></input>
         <label className='text-Makara text-xl py-4 font-semibold'>
           Confirm Password
@@ -53,7 +83,10 @@ const SignUpPage = () => {
           placeholder='Enter Password Again'
           type='password'
           ref={passwordConfirmRef}
+          required
+          minLength={6}
         ></input>
+        {error && <p className='text-red-700 text-xl'>{error}</p>}
         <button
           type='submit'
           className='mt-6 w-full h-20 rounded-md bg-black text-white p-5 font-semibold text-xl tracking-wider'

@@ -1,19 +1,32 @@
-import { Link } from 'react-router-dom';
+import { useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useFireAuth } from '../hooks/useFireAuth.js';
 import userTestimonial from '../images/userTestimonial.svg';
 
 const SignInPage = () => {
+  let navigate = useNavigate();
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const auth = useFireAuth();
+  const handleSignIn = async (evt) => {
+    evt.preventDefault();
+    await auth.signin(emailRef.current.value, passwordRef.current.value);
+    navigate(-1);
+  };
+
   return (
     <section className='px-6'>
       <p className='p-2 text-5xl font-bold'>
         Start exploring camps from all over the world.
       </p>
-      <form className=' flex flex-col mt-4 mb-8'>
+      <form onSubmit={handleSignIn} className=' flex flex-col mt-4 mb-8'>
         <label className='text-Makara text-xl py-4 font-semibold'>Email</label>
         <input
           className='px-4 py-6 bg-floral-white text-lg rounded'
           autoComplete='off'
           placeholder='Enter Your Email'
           type='email'
+          ref={emailRef}
         ></input>
         <label className='text-Makara text-xl py-4 font-semibold'>
           Password
@@ -23,6 +36,7 @@ const SignInPage = () => {
           autoComplete='off'
           placeholder='Your Password'
           type='password'
+          ref={passwordRef}
         ></input>
 
         <button className='mt-6 w-full h-20 rounded-md bg-black text-white p-5 font-semibold text-xl tracking-wider'>

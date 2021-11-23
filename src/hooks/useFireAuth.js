@@ -40,33 +40,38 @@ export const useFireAuth = () => {
 // Provider hook that creates auth object and handles state
 function useProvideAuth() {
   const [authUser, setAuthUser] = useState(null);
+  const [authError, setAuthError] = useState(null);
 
   const signup = (email, password) => {
-    return createUserWithEmailAndPassword(auth, email, password)
-      .then((response) => {
-        setAuthUser(response.user);
-        return response.user;
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
-        console.log('ErrorCode', errorCode);
-        console.log('ErrorMessage', errorMessage);
-      });
+    return createUserWithEmailAndPassword(auth, email, password).then(
+      (userCredential) => {
+        setAuthUser(userCredential.user);
+        return userCredential.user;
+      }
+    );
+    // .catch((error) => {
+    //   const errorCode = error.code;
+    //   const errorMessage = error.message;
+
+    //   // ..
+    //   setAuthError({ code: errorCode, message: errorMessage });
+    //   console.log('ErrorCode', errorCode);
+    //   console.log('ErrorMessage', errorMessage);
+    // });
   };
   const signin = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password)
-      .then((response) => {
+      .then((userCredential) => {
         // Signed in
-        setAuthUser(response.user);
-        return response.user;
+        setAuthUser(userCredential.user);
+        return userCredential.user;
         // ...
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         // ..
+        setAuthError({ code: errorCode, message: errorMessage });
         console.log('ErrorCode', errorCode);
         console.log('ErrorMessage', errorMessage);
       });
@@ -82,6 +87,7 @@ function useProvideAuth() {
         const errorCode = error.code;
         const errorMessage = error.message;
         // ..
+        setAuthError({ code: errorCode, message: errorMessage });
         console.log('ErrorCode', errorCode);
         console.log('ErrorMessage', errorMessage);
       });
@@ -107,6 +113,7 @@ function useProvideAuth() {
   // Return the user object and auth methods
   return {
     authUser,
+    authError,
     signin,
     signup,
     signout,
