@@ -1,10 +1,8 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import userTestimonial from '../images/userTestimonial.svg';
 
 const SignUpPage = () => {
-  const [error, setError] = useState('');
-
   const nameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();

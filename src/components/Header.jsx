@@ -1,7 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import Banner from './Banner';
 import NavBar from './NavBar';
-import { useLocalStorage } from '../utils/useLocalStorage';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 
 const Header = () => {
   const [showBanner, setShowBanner] = useLocalStorage('bannerState', true);
