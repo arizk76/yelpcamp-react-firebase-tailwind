@@ -17,7 +17,6 @@ export const db = getFirestore(fireApp);
 
 export const useFireStore = () => {
   const addUser = (name, email, uid) => {
-    console.log(uid);
     return addDoc(collection(db, 'users'), {
       userID: uid,
       name: name,

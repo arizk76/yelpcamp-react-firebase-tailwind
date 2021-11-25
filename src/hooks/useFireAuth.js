@@ -40,7 +40,7 @@ export const useFireAuth = () => {
 // Provider hook that creates auth object and handles state
 function useProvideAuth() {
   const [authUser, setAuthUser] = useState(null);
-  const [authError, setAuthError] = useState(null);
+  // const [authError, setAuthError] = useState(null);
 
   const signup = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password).then(
@@ -67,14 +67,14 @@ function useProvideAuth() {
         return userCredential.user;
         // ...
       })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
-        setAuthError({ code: errorCode, message: errorMessage });
-        console.log('ErrorCode', errorCode);
-        console.log('ErrorMessage', errorMessage);
-      });
+      // .catch((error) => {
+      //   const errorCode = error.code;
+      //   const errorMessage = error.message;
+      //   // ..
+      //   setAuthError({ code: errorCode, message: errorMessage });
+      //   console.log('ErrorCode', errorCode);
+      //   console.log('ErrorMessage', errorMessage);
+      // });
   };
 
   const signout = () => {
@@ -82,15 +82,15 @@ function useProvideAuth() {
       .then(() => {
         console.log('User signed out successfully');
       })
-      .catch((error) => {
-        // An error happened.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
-        setAuthError({ code: errorCode, message: errorMessage });
-        console.log('ErrorCode', errorCode);
-        console.log('ErrorMessage', errorMessage);
-      });
+      // .catch((error) => {
+      //   // An error happened.
+      //   const errorCode = error.code;
+      //   const errorMessage = error.message;
+      //   // ..
+      //   setAuthError({ code: errorCode, message: errorMessage });
+      //   console.log('ErrorCode', errorCode);
+      //   console.log('ErrorMessage', errorMessage);
+      // });
   };
 
   // Subscribe to user on mount
@@ -113,7 +113,7 @@ function useProvideAuth() {
   // Return the user object and auth methods
   return {
     authUser,
-    authError,
+    // authError,
     signin,
     signup,
     signout,

@@ -1,14 +1,16 @@
 import { useRef, useState } from 'react';
 import { useFireAuth } from '../hooks/useFireAuth.js';
 import { useFireStore } from '../hooks/useFireStore.js';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 
 import userTestimonial from '../images/userTestimonial.svg';
 
 const SignUpPage = () => {
   const [error, setError] = useState();
+  const [redirect, setRedirect] = useState(false);
   const auth = useFireAuth();
   const { addUser } = useFireStore();
+  let navigate = useNavigate();
 
   const nameRef = useRef();
   const emailRef = useRef();
@@ -27,6 +29,9 @@ const SignUpPage = () => {
         .signup(emailRef.current.value, passwordRef.current.value)
         .then((user) => user.auth.currentUser.uid);
       await addUser(nameRef.current.value, emailRef.current.value, userID);
+      setRedirect(true);
+      // return <Navigate to='/campgounds' replace />;
+      // navigate(-1);
     } catch (err) {
       if (err.code === 'auth/email-already-in-use') {
         setError('Email already in use');
@@ -37,6 +42,8 @@ const SignUpPage = () => {
   };
 
   // TODO: add user to new firestore db
+
+  if (redirect) return <Navigate to='/campgounds' />;
 
   return (
     <section className='px-6'>

@@ -1,17 +1,20 @@
 import { useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useFireAuth } from '../hooks/useFireAuth.js';
 import userTestimonial from '../images/userTestimonial.svg';
 
 const SignInPage = () => {
   let navigate = useNavigate();
+  let location = useLocation();
+  let from = location.state?.from?.pathname || '/campgrounds';
   const emailRef = useRef();
   const passwordRef = useRef();
   const auth = useFireAuth();
+
   const handleSignIn = async (evt) => {
     evt.preventDefault();
     await auth.signin(emailRef.current.value, passwordRef.current.value);
-    navigate(-1);
+    return navigate(from, { replace: true });
   };
 
   return (
